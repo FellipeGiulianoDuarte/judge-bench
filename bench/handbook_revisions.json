@@ -1,0 +1,7 @@
+{
+  "_comment": "Revision date printed on the first page of each Play! Pokémon document (LAST REVISION / LAST UPDATED), as ISO dates. Update when a new PDF is fetched: judge-mcp's corpus/build_docs.py prints the revision of each document it builds. bench/stale.py compares keys against these.",
+  "tcg-tournament-handbook": "2026-09-01",
+  "tournament-rules-handbook": "2026-09-01",
+  "penalty-guidelines": "2026-09-01",
+  "rulebook": "2026-07-01"
+}

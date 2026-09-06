@@ -1,0 +1,28 @@
+Pokémon TCG rules benchmark — question set and corpus files
+Copyright (c) 2026 Fellipe Giuliano Duarte
+
+The following files are licensed under Creative Commons
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), NOT the AGPL:
+
+  bench/questions.jsonl
+
+Full text: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+Attribute as: "Pokémon TCG rules benchmark, Fellipe Giuliano Duarte", with a
+link to this repository. If you extend or adapt the question set, share your
+version under the same licence.
+
+Everything else in this repository is under the GNU Affero General Public
+License v3.0 — see LICENSE.
+
+
+WHAT IS NOT COVERED BY EITHER
+=============================
+Nothing published by The Pokémon Company International is licensed here, and
+none of it is redistributed by this repository. The rulebook, the tournament
+handbooks, the Penalty Guidelines, the errata list, card text and card images
+remain theirs. This repository ships scripts that download them onto the machine
+that runs them; the downloaded files are gitignored.
+
+This project is unofficial and is not affiliated with, endorsed by, or sponsored
+by The Pokémon Company International or Nintendo.

@@ -1,0 +1,24 @@
+# Raw chat exports and anything derived from them — never commit.
+*.zip
+work/
+
+# The held-out half. Publishing it is what makes it worthless.
+*.private.jsonl
+bench/questions.private.jsonl
+
+# Downloaded rules documents and card data. Scripts are committed, content is not.
+corpus/raw/
+corpus/data/documents.json
+corpus/cards.sqlite*
+dist/
+bench/results/
+bench/local/
+
+# Secrets, never.
+.env
+*.key
+
+.venv/
+__pycache__/
+corpus/data/compendium.json
+local/

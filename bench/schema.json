@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pokémon TCG rules benchmark question",
+  "description": "One record per question. Questions are rewritten in our own words; no original wording is reproduced and the source is not disclosed.",
+  "type": "object",
+  "required": [
+    "id",
+    "question_en",
+    "category",
+    "verdict",
+    "answer_source",
+    "key_checked_by",
+    "key_checked_on",
+    "split"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^q-[0-9a-f]{4,12}$",
+      "description": "q- plus a hash of the question text, so adding questions never renumbers existing ones or moves them between the public and private halves."
+    },
+    "question_en": {
+      "type": "string",
+      "description": "The question in English, in your own words."
+    },
+    "question_pt": {
+      "type": "string",
+      "description": "Optional Portuguese version. Keep the ambiguity of the original rather than tidying it up — the confusion is what makes the question hard."
+    },
+    "category": {
+      "enum": [
+        "interaction",
+        "legality",
+        "tournament",
+        "penalty",
+        "deckbuilding"
+      ],
+      "description": "tournament = how an event runs. penalty = what to do when someone breaks a rule."
+    },
+    "answer_source": {
+      "enum": [
+        "mechanics",
+        "exception"
+      ],
+      "description": "mechanics = three judges reading the rulebook would agree. exception = they would argue, and TPCi settled it. This split is the interesting axis: a model can reason to a mechanics answer and cannot reason to an exception."
+    },
+    "verdict": {
+      "enum": [
+        "yes",
+        "no",
+        "depends",
+        "unanswerable",
+        "open"
+      ],
+      "description": "open = the question is not yes/no ('what is the fix?', 'what is the result?'). Grade those on expected_points alone."
+    },
+    "expected_points": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Facts the answer must contain. Required when verdict is 'open', since there is no verdict to match. Graded individually, so a right answer for the wrong reason scores differently from a right one."
+    },
+    "must_abstain": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when nothing in the corpus answers this. Scores whether the system refuses instead of inventing."
+    },
+    "needs_context": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "event_tier",
+          "division",
+          "repeat_offense",
+          "printing",
+          "format"
+        ]
+      },
+      "description": "A correct answer must ASK for these, not assume them. Penalties change with tier and division."
+    },
+    "answer_changed_after": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "Date the correct answer last changed (a rotation, an errata, a rules update). Non-null questions are where a stale model should fail."
+    },
+    "asked": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}$",
+      "description": "Month (YYYY-MM) the question was recorded. Coarse on purpose. bench/stale.py uses it to flag rule-of-the-event keys recorded before the current handbook revision."
+    },
+    "key_checked_against": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"},
+      "description": "Document -> ISO revision date the key was verified against (e.g. {\"tcg-tournament-handbook\": \"2026-09-01\"}). Absent means the key has not been checked against a dated document."
+    },
+    "rule_changed": {
+      "type": "string",
+      "description": "Present when the rule behind this key is known to have changed; says between which document revisions."
+    },
+    "contested_reason": {
+      "type": "string",
+      "description": "Why the question is excluded from verdict scoring: e.g. time-bound (the right answer changes with the date asked)."
+    },
+    "contested": {
+      "type": "boolean",
+      "default": false,
+      "description": "Judges genuinely disagree. Scored separately, never forced to one answer."
+    },
+    "source_ref": {
+      "type": "string",
+      "description": "Local reference into work/*.jsonl. Never a quote."
+    },
+    "key_checked_by": {
+      "type": "string",
+      "description": "Name of the certified Professor or judge who verified this answer."
+    },
+    "key_checked_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "split": {
+      "enum": [
+        "public",
+        "private"
+      ],
+      "description": "Assigned by hashing the id (bench/draft.py). private is never published — it is what still measures anything once the public half has entered training data."
+    },
+    "drafted_by": {
+      "type": "string",
+      "description": "Who wrote the question text. Separate from key_checked_by: writing a clear question and knowing the right answer are different jobs."
+    },
+    "key_recheck": {
+      "type": "object",
+      "description": "Present when the key was re-derived after independent runs disagreed with it. Records the problem found and the verdict it replaced, so the correction is auditable."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "const": "open"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "expected_points"
+        ]
+      }
+    }
+  ]
+}

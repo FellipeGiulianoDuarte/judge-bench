@@ -1,0 +1,15 @@
+[project]
+name = "judge-bench"
+version = "0.1.0"
+description = "A benchmark of real Pokemon TCG rules questions, answered by judges"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+models = ["anthropic>=0.70"]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "jsonschema>=4"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
